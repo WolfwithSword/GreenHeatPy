@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "greenheat-py"
-version = "0.1.0"
+version = "0.1.1"
 description = "An async Python client for GreenHeat, a Twitch stream click/heatmap overlay extension"
 readme = "README.md"
 license = "MIT"
