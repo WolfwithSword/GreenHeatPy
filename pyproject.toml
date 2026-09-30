@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "An async Python client for GreenHeat, a Twitch stream click/heatmap overlay extension"
 readme = "README.md"
 license = "MIT"
-license-files = ["LICEN[CS]E.*"]
+license-files = ["LICENCE"]
 authors = [
   { name = "WolfwithSword", email = "12175651+WolfwithSword@users.noreply.github.com" }
 ]
