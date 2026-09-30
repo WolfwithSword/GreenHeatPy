@@ -27,7 +27,9 @@ class GreenHeatMessage:
             data = json.loads(data)
         else:
             self.raw = json.dumps(data)
+            data = dict(data)
 
+        assert isinstance(data, dict), "Invalid data received"
         data["button"] = GreenHeatButtonType(data["button"])
         data["type"] = GreenHeatEventType(data["type"])
         data["time"] = datetime.fromtimestamp(data["time"] / 1000, tz=timezone.utc)
@@ -42,7 +44,7 @@ class GreenHeatMessage:
         return self.id
 
     def is_in_box(self, x1: float, y1: float, x2: float, y2: float) -> bool:
-        return x2 > self.x > x1 and y2 > self.y > y1
+        return x1 <= self.x <= x2 and y1 <= self.y <= y2
 
     def is_in_circle(self, center_x: float, center_y: float, radius: float) -> bool:
         dx = self.x - center_x

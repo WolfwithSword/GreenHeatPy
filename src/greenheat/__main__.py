@@ -1,29 +1,34 @@
-import asyncio
 import argparse
-from greenheat.client import GreenHeat
-
+import asyncio
 import logging
+
+from greenheat.client import GreenHeat
+from greenheat.models import GreenHeatMessage
+
 logger = logging.getLogger(__name__)
 
-async def on_message(message):
+
+async def on_message(message: GreenHeatMessage):
     logger.debug(f"greenheat event: {message}")
-
-parser = argparse.ArgumentParser()
-parser.add_argument("--channel", required=True)
-parser.add_argument("--debug", action="store_true")
-
-args = parser.parse_args()
 
 
 def main():
-    assert args.channel
-    if args.debug:
-        logger.setLevel(logging.DEBUG)
-    else:
-        logger.setLevel(logging.INFO)
+    parser = argparse.ArgumentParser(prog="greenheat", description="print greenheat events for a twitch channel")
+    parser.add_argument("--channel", required=True)
+    parser.add_argument("--debug", action="store_true")
+    args = parser.parse_args()
 
-    conn = GreenHeat(args.channel, on_message=on_message)
-    asyncio.run(conn.run())
+    logging.basicConfig(
+        level=logging.DEBUG if args.debug else logging.INFO,
+        format="%(asctime)s - %(levelname)s - [%(name)s] %(message)s",
+    )
+    logging.getLogger("websockets").setLevel(logging.INFO)
 
-if __name__ == "__main__.py":
+    try:
+        asyncio.run(GreenHeat(args.channel, on_message=on_message).run())
+    except KeyboardInterrupt:
+        pass
+
+
+if __name__ == "__main__":
     main()
